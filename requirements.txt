@@ -4,3 +4,4 @@ google-auth-oauthlib
 google-generativeai
 python-dotenv
 tzlocal
+streamlit

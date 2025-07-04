@@ -36,7 +36,8 @@ def main():
     if not text_content or not text_content.strip():
         print("📄 No content found in the specified document/sheet. Exiting.")
         return
-
+    print("Data")
+    print(text_content.strip())
     extracted_events = extract_events_from_text(text_content)
 
     if not extracted_events:
