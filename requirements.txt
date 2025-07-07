@@ -4,3 +4,6 @@ google-auth-oauthlib
 google-generativeai
 python-dotenv
 tzlocal
+langchain
+langchain-google-genai
+pydantic

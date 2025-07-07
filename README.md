@@ -38,7 +38,7 @@
 2.  Make a copy of it and rename the copy to `.env`.
 3.  Open the new `.env` file and paste your Gemini API key into it.
     ```
-    GEMINI_API_KEY="paste_your_key_here"
+    GOOGLE_API_KEY="paste_your_key_here"
     ```
 
 **Step 5: Run the Application**
