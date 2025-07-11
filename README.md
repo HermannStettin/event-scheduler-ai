@@ -1,34 +1,12 @@
-### What Your Friend Should Do (Their Setup Guide)
-
-Here is a complete, step-by-step guide you can send to your friend.
-
----
-
-### **Guide: How to Set Up the AI Event Scheduler**
-
-Follow these steps to get the project running on your machine.
-
 **Prerequisites:**
 *   Python 3.7+ installed.
 *   A Google Account.
 
 **Step 1: Get the Code & Set Up Environment**
-1.  Unzip the project folder you received (or clone it from GitHub).
-2.  Open a terminal or command prompt and navigate into the project directory.
-3.  **Create a virtual environment:**
-    ```bash
-    python -m venv venv
-    ```
-4.  **Activate the environment:**
-    *   On Windows: `venv\Scripts\activate`
-    *   On macOS/Linux: `source venv/bin/activate`
-5.  **Install the required libraries:**
-    ```bash
+
     pip install -r requirements.txt
-    ```
 
 **Step 2: Configure Your Google Cloud APIs**
-This is the most detailed step. You need to tell Google that your application is allowed to access your data.
 
 1.  Go to the [Google Cloud Console](https://console.cloud.google.com/) and create a **new project**.
 2.  **Enable APIs:** Go to **APIs & Services > Library**. Search for and **Enable** these three APIs:
@@ -58,12 +36,12 @@ This is the most detailed step. You need to tell Google that your application is
 2.  Make a copy of it and rename the copy to `.env`.
 3.  Open the new `.env` file and paste your Gemini API key into it.
     ```
-    GEMINI_API_KEY="paste_your_key_here"
+    GOOGLE_API_KEY="paste_your_key_here"
     ```
 
-**Step 5: Run the Application!**
-1.  **First Run (Authentication):** The very first time you run the script, a browser window will open asking you to log in to Google and grant permission. This is normal. Log in with the same account you added as a "Test User". A `token.json` file will be created automatically.
-2.  **Get a Doc/Sheet ID:** Create a test Google Doc or Sheet with some event text and copy its ID from the URL.
+**Step 5: Run the Application**
+1.  **First Run (Authentication):** A browser window will open asking you to log in to Google and grant permission. Log in with the same account you added as a "Test User". A `token.json` file will be created automatically.
+2.  **Get a Doc/Sheet ID:** Create a test Google Doc or Sheet with some event text and copy its ID from the URL. ID is the string after /d/.
 3.  **Run from your terminal:**
     ```bash
     # For a Google Doc
