@@ -1,7 +1,7 @@
 from langchain.tools import tool
 from pydantic import BaseModel, Field
 from google_auth import get_google_services
-from google_services import get_google_doc_content, get_google_sheet_content, create_calendar_event
+from google_services import get_google_doc_content, get_google_sheet_content, create_calendar_event, get_google_sheet_page_names
 from ai_event_extractor import extract_events_from_text
 from tzlocal import get_localzone_name
 
@@ -64,16 +64,54 @@ def read_google_doc(document_id: str) -> str:
     return get_google_doc_content(services["docs"], document_id)
 
 @tool
-def read_google_sheet(spreadsheet_id: str) -> str:
+def list_google_sheet_names_tool(spreadsheet_id: str) -> str:
     """
-    Reads the text content from a Google Sheet given its ID.
-    Use this to get the raw text from a spreadsheet before analyzing it.
+    Tool: Lists all sheet (tab) names in the specified Google Sheets document.
+
+    Args:
+        spreadsheet_id (str): The ID of the Google Sheets document.
+
+    Returns:
+        str: Comma-separated sheet names or error message.
     """
-    print(f"🤖 Agent is using read_google_sheet tool for sheet ID: {spreadsheet_id}")
-    services = get_google_services()
-    if not services:
-        return "Error: Could not connect to Google services."
-    return get_google_sheet_content(services["sheets"], spreadsheet_id)
+    try:
+        service = get_google_services()["sheets"]
+        spreadsheet = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+        sheet_names = [sheet['properties']['title'] for sheet in spreadsheet.get('sheets', [])]
+        return "✅ Sheet names: " + ", ".join(sheet_names)
+    except Exception as e:
+        return f"❌ Error listing sheet names: {e}"
+
+
+@tool
+def read_google_sheet(spreadsheet_id: str, sheet_name: str = None,
+                                  sheet_range: str = "A1:Z100") -> str:
+    """
+    Tool: Reads content from a specified sheet and range in a Google Sheets document.
+
+    Args:
+        service: An authorized Sheets API service instance.
+        spreadsheet_id (str): The ID of the Google Sheets document.
+        sheet_name (str, optional): The name of the sheet/tab to read from.
+        sheet_range (str, optional): The A1 notation range to read. Defaults to "A1:Z100".
+
+    Returns:
+        str: Text representation of the sheet content or an error message.
+    """
+    try:
+        service = get_google_services()["sheets"]
+        full_range = f"{sheet_name}!{sheet_range}" if sheet_name else sheet_range
+        result = service.spreadsheets().values().get(
+            spreadsheetId=spreadsheet_id, range=full_range
+        ).execute()
+        values = result.get('values', [])
+        if not values:
+            return "⚠️ No data found in the specified range."
+
+        return "📄 Sheet Content:\n" + "\n".join([" ".join(row) for row in values])
+    except Exception as e:
+        return f"❌ Error reading sheet content: {e}"
+
 
 @tool
 def create_new_google_calendar(calendar_name: str) -> str:
@@ -103,6 +141,7 @@ def create_new_google_calendar(calendar_name: str) -> str:
 all_tools = [
     read_google_doc,
     read_google_sheet,
+    list_google_sheet_names_tool,
     extract_events_from_document_text,
     add_event_to_calendar,
     create_new_google_calendar,

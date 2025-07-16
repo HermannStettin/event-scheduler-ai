@@ -16,12 +16,42 @@ def get_google_doc_content(service, document_id: str) -> str:
         print(f"❌ Error reading Google Doc: {e}")
         return None
 
-def get_google_sheet_content(service, spreadsheet_id: str, sheet_range: str = "A1:Z100") -> str:
+
+def get_google_sheet_page_names(service, spreadsheet_id: str) -> list:
+    """Returns the names of all sheets/pages in a Google Spreadsheet.
+
+    Args:
+        service: Google Sheets API service object
+        spreadsheet_id: ID of the spreadsheet to inspect
+
+    Returns:
+        List of sheet names (empty list on error)
+    """
+    try:
+        print(f"📑 Fetching sheet names from Google Sheet ID: {spreadsheet_id}")
+        spreadsheet = service.spreadsheets().get(
+            spreadsheetId=spreadsheet_id
+        ).execute()
+
+        sheet_names = [
+            sheet['properties']['title']
+            for sheet in spreadsheet.get('sheets', [])
+        ]
+
+        print(f"✅ Found {len(sheet_names)} sheets: {', '.join(sheet_names)}")
+        return sheet_names
+
+    except Exception as e:
+        print(f"❌ Error fetching sheet names: {e}")
+        return []
+
+
+def get_google_sheet_content(service, spreadsheet_id: str, sheet_name: str = None, sheet_range: str = "A1:Z100") -> str:
     """Reads and returns the content of a Google Sheet as a single string."""
     try:
         print(f"📊 Reading content from Google Sheet ID: {spreadsheet_id}")
         result = service.spreadsheets().values().get(
-            spreadsheetId=spreadsheet_id, range=sheet_range
+            spreadsheetId=spreadsheet_id, range=((sheet_name + "!") if sheet_name is not None else "") + sheet_range
         ).execute()
         values = result.get('values', [])
         
