@@ -1,6 +1,6 @@
 # Document Event Extractor
 
-This agentintic application allows user to add events to their Google Calendar from Google Docs and Google Sheets. App can extract information specified by user, add events to spefic calendar, extract from needed Google Sheets lists.
+This agentic application allows user to add events to their Google Calendar from Google Docs and Google Sheets. App can extract information specified by user, add events to specific calendar, extract from needed Google Sheets lists.
 
 ## Installation and Setup
 
