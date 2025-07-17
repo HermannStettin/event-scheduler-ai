@@ -1,3 +1,9 @@
+# Document Event Extractor
+
+This agentintic application allows user to add events to their Google Calendar from Google Docs and Google Sheets. App can extract information specified by user, add events to spefic calendar, extract from needed Google Sheets lists.
+
+## Installation and Setup
+
 **Prerequisites:**
 *   Python 3.7+ installed.
 *   A Google Account.
@@ -39,16 +45,29 @@
     GOOGLE_API_KEY="paste_your_key_here"
     ```
 
-**Step 5: Run the Application**
-1.  **First Run (Authentication):** A browser window will open asking you to log in to Google and grant permission. Log in with the same account you added as a "Test User". A `token.json` file will be created automatically.
-2.  **Get a Doc/Sheet ID:** Create a test Google Doc or Sheet with some event text and copy its ID from the URL. ID is the string after /d/.
-3.  **Run from your terminal:**
-    ```bash
-    # For a Google Doc
-    python main.py --doc-id "the-id-of-your-doc"
+**Important note:**
 
-    # For a Google Sheet
-    python main.py --sheet-id "the-id-of-your-sheet"
+Environment variable for Gemini should be strictly GOOGLE_API_KEY (not GEMINI_API_KEY, AI_API_KEY etc.)
+
+
+**Step 5: Install the Google Cloud CLI (`gcloud`)**
+
+*   Follow the official installation instructions: [Google Cloud CLI Installation Guide](https://cloud.google.com/sdk/docs/install)
+
+After installation, close and reopen your terminal, or run `gcloud init` to ensure it's configured.
+
+**Step 6: Log in and Create the Default Credentials**
+
+1.  Make sure you are in your project directory and your virtual environment is activated.
+2.  Run the following command in your terminal:
+
+    ```bash
+    gcloud auth application-default login
     ```
 
----
+    *   Your web browser will open to a Google login page.
+    *   Log in with the **same Google account** you used to create your Google Cloud project and enable the APIs.
+    *   You will be asked to grant permissions to the "Google Cloud SDK". Click **Allow**.
+    *   You'll see a confirmation page, and your terminal will show "Credentials saved!".
+
+This command creates a JSON file with your authentication info in a hidden folder on your computer (e.g., `~/.config/gcloud/application_default_credentials.json` on Linux/macOS).
