@@ -71,3 +71,10 @@ After installation, close and reopen your terminal, or run `gcloud init` to ensu
     *   You'll see a confirmation page, and your terminal will show "Credentials saved!".
 
 This command creates a JSON file with your authentication info in a hidden folder on your computer (e.g., `~/.config/gcloud/application_default_credentials.json` on Linux/macOS).
+
+**Step 7: Run streamlit app using
+```bash
+streamlit run agent_app.py
+```
+
+**Step 8: Go to URL provided in console (usually streamlit run browser itself). And you will get chat window where you can interact with bot.
